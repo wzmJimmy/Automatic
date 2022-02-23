@@ -1,0 +1,35 @@
+# ignore compiled python files
+__pycache__
+*.pyc
+
+# ignore environment settings
+*.env
+
+# ignore virtual env directory
+venv/*
+
+# ignore pids created during local testing
+*.pid
+
+# ignore private and public keys
+id_rsa.*
+ssh/*
+
+# ignore pem files
+*.pem
+
+# ignore mac files
+*.DS_Store
+
+# ignore Intellij/Pycharm IDE folder
+.idea
+
+# ignore pytest
+.pytest_cache
+
+
+
+
+# ignore config and reference
+config/*
+reference/*
