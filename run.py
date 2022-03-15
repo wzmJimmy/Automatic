@@ -22,7 +22,7 @@ parser_conn_csv.set_defaults(func=generate_conn_id_csv)
 
 parser_update_conn = subparsers.add_parser('update_conn')
 parser_update_conn.add_argument('--pod', dest='pod', type=str, default="webserver-deployment")
-parser_update_conn.add_argument('--config', dest='fconfig', type=str, default=os.path.join(BASE,"config/stage_extra.json"))
+parser_update_conn.add_argument('--config', dest='fconfig', type=str, default=os.path.join(BASE,"config"))
 parser_update_conn.add_argument('--dag', dest='fdag', type=str, required=True)
 parser_update_conn.set_defaults(func=update_all_conn)
 

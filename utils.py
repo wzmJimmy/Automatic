@@ -17,8 +17,13 @@ def run_shell(script: str, cap_result: bool = False) -> list:
     else:
         return []
 
+def newest(path):
+    files = os.listdir(path)
+    paths = [os.path.join(path, basename) for basename in files]
+    return max(paths, key=os.path.getctime)
 
-def read_json_file(fname: str) -> dict:
+def read_json_file(dname: str) -> dict:
+    fname = newest(dname)
     with open(fname) as f:
         dic = json.load(f)
     return dic
@@ -50,13 +55,13 @@ def constant_leap_waiter(start_sec: int, end_sec: int, leap_sec: int,
         if cond(t):
             return None
         elif verbose:
-            print("{} sec: still waiting.".format(t))
+            print(f"{t} sec: still waiting.")
 
-    raise TimeoutError("Condtion not fulfilled after {} sec.".format(end_sec))
+    raise TimeoutError(f"Condtion not fulfilled after {end_sec} sec.")
 
 
 if __name__ == "__main__":
-    res = run_shell("ls -al {}".format(BASE), True)
+    res = run_shell(f"ls -al {BASE}", True)
     for line in res:
         print(line)
 

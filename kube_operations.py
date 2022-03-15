@@ -24,8 +24,8 @@ def kube_exec_bash(script: str, pod: str, hint: str = "processing..."):
 
 
 def change_conn(pod: str, conn_id: str, dic: dict, add_only: str = False):
-    cmd_delete = "airflow connections -d --conn_id {}".format(conn_id)
-    li_cmd_add = ["airflow connections -a --conn_id {}".format(conn_id)]
+    cmd_delete = f"airflow connections -d --conn_id {conn_id}"
+    li_cmd_add = [f"airflow connections -a --conn_id {conn_id}"]
     hint = "{} connection {} ..."
 
     if not add_only:
@@ -33,27 +33,27 @@ def change_conn(pod: str, conn_id: str, dic: dict, add_only: str = False):
 
     for key, v in dic.items():
         value = dumps_json(v, key == "conn_extra")
-        li_cmd_add.append("--{} {}".format(key, value))
+        li_cmd_add.append(f"--{key} {value}")
 
     kube_exec_bash(' '.join(li_cmd_add), pod, hint.format("Add", conn_id))
 
 
-def _update_all_conn(pod: str, fname: str, li_conn: list[str]):
-    dic = read_json_file(fname)
+def _update_all_conn(pod: str, dname: str, li_conn: list[str]):
+    dic = read_json_file(dname)
 
     for conn_id in li_conn:
         if conn_id in dic:
             change_conn(pod, conn_id, dic[conn_id])
         else:
-            print("{} not exist in config file.".format(conn_id))
+            print(f"{conn_id} not exist in config file.")
 
 
 def update_all_conn(pod: str, fconfig: str, fdag: str):
     pod_name = get_pod(pod)
-    print("Pod name is {}.".format(pod_name))
+    print(f"Pod name is {pod_name}.")
 
     li_conn = get_connection_need(fdag)
-    print("Conn_ids are needed: {}".format(li_conn))
+    print(f"Conn_ids are needed: {li_conn}")
 
     _update_all_conn(pod_name, fconfig, li_conn)
     print("update conn finished.")
@@ -72,7 +72,7 @@ def wait_pod_to_active(pod: str, start_sec: int = 150,
         cond=cond,
         verbose=True
     )
-    print("Pod {} initiatied successfully.".format(pod))
+    print(f"Pod {pod} initiatied successfully.")
 
 
 if __name__ == "__main__":
